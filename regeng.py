@@ -12,9 +12,9 @@ def makeRange(start, end):
 	return out
 
 def preProcess(expr : str) -> list:
-	#add any missing . (NFA Concat operator)	
+	#add . (NFA Concat operator)
+	#add range
 	out = []
-	
 	i = 0
 
 	while i < len(expr) :
