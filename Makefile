@@ -18,7 +18,7 @@ clean-build:
 clean: clean-build
 
 check:
-	$(PYTHON) --version
+	@$(PYTHON) --version
 
 run: check
-	$(PYTHON) main.py
+	@$(PYTHON) main.py
