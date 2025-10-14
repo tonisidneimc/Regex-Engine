@@ -15,10 +15,15 @@ def run_test(pattern, test_cases, expected_results, test_name=""):
     
     for i, (test, expected) in enumerate(zip(test_cases, expected_results)):
         result = rgx.search(test)
-        passed = result == expected
+        passed = (result is not None) == expected
         status = "PASS" if passed else "FAIL"
         
-        print(f"  {status} - '{test}' {'should' if expected else 'should not'} match: {result}")
+        if result:
+            match_info = f"Match: '{result.group}' at {result.span}"
+        else:
+            match_info = "No match"
+        
+        print(f"  {status} - '{test}' {'should' if expected else 'should not'} match: {match_info}")
         
         if not passed:
             all_passed = False
@@ -90,6 +95,25 @@ def run_all_tests():
             "test_cases": ["", "0", "123", "a123", "123a"],
             "expected": [False, True, True, True, True],
             "name": "(one or more digits)"
+        },
+        # Special character classes
+        {
+            "pattern": "\\d+",
+            "test_cases": ["", "0", "123", "a123", "123a"],
+            "expected": [False, True, True, True, True],
+            "name": "(\\d - one or more digits)"
+        },
+        {
+            "pattern": "\\w+",
+            "test_cases": ["", "abc", "123", "abc_123", "!@#"],
+            "expected": [False, True, True, True, False],
+            "name": "(\\w - one or more word characters)"
+        },
+        {
+            "pattern": "\\s+",
+            "test_cases": ["", " ", "\t\n", "a b", "a"],
+            "expected": [False, True, True, True, False],
+            "name": "(\\s - one or more whitespace characters)"
         },
         {
             "pattern": "[a-z][0-9]",
